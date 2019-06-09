@@ -7,14 +7,14 @@ Framework applied:
 Vue.js
 ----
 Language used:
-Javascript
-HTML
-CSS
+Javascript,
+HTML,
+CSS,
 ----
 Need:
-request
-cheerio
-json
+Request,
+Cheerio,
+Json,
 *All available through npm install*
 ----
 Trial implementation for the University of Michigan - Dearborn
