@@ -42,7 +42,8 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
         if (!error && response.statusCode == 200) {
             //first off wtf is this element
             //secondly we dont need a for loop here so how to fix it 
-            var tag = $('').children();
+           // var tag = $('').children();
+           tag = "200";
             console.log(tag);
         }
     });

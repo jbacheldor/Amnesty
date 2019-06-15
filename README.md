@@ -1,24 +1,25 @@
 # Amnesty
-----
+---------------------------------------------
 Database used:
 Firebase
-----
+---------------------------------------------
 Framework applied:
 Vue.js
-----
+---------------------------------------------
 Language used:
 Javascript,
 HTML,
 CSS,
-----
+---------------------------------------------
 Need:
 Request,
 Cheerio,
 Json,
+Node.js,
 *All available through npm install*
-----
+---------------------------------------------
 Trial implementation for the University of Michigan - Dearborn
-----
+---------------------------------------------
 Design created to assist in orientations:
 
 1. Students select the issues they are passionate about and select next
