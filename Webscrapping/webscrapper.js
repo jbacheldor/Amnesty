@@ -1,6 +1,8 @@
+//import {heck} from '../Firebase/firebase'
 //import firebase document here
 var request = require('request');
 var cheerio = require('cheerio');
+const firebaseJS = require('../Firebase/firebase');
 
 const actionLinks = [];
 
@@ -35,7 +37,7 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
     console.log(parsedResults);
   }
   //again tech debt -- need to figure out what scope of
-  //this bitch is
+  //this one is
   
     actionLinks.forEach(function(element){
     var url = 'https://www.amnesty.org' + element;
@@ -49,5 +51,5 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
         }
     });
 });
- 
+firebaseJS.heck();
 });
