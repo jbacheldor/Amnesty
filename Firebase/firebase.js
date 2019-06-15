@@ -8,7 +8,13 @@ require("firebase/firestore");
 require("firebase/database");
 
 // TODO: Replace the following with your app's Firebase project configuration
-var firebaseConfig = {
-    // ...
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDmxCFBvrrUywaJqoss2_9Z683DTzMB7B4",
+  authDomain: "amnesty-orientation.firebaseapp.com",
+  databaseURL: "https://amnesty-orientation.firebaseio.com",
+  projectId: "amnesty-orientation",
+  storageBucket: "amnesty-orientation.appspot.com",
+  messagingSenderId: "980364352527",
+  appId: "1:980364352527:web:10d7acb12e502546"
+};
 
