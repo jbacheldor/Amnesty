@@ -33,8 +33,11 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
       // Push meta-data into parsedResults array
       parsedResults.push(metadata);
     });
-    // Log our finished parse results in the terminal
+    //both of these still have /r and /t
+    // Log our finished parse results in the terminal 
     console.log(parsedResults);
+    //converts to json file
+    console.log( JSON.stringify(parsedResults) );
   }
   //again tech debt -- need to figure out what scope of
   //this one is
@@ -43,11 +46,20 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
     var url = 'https://www.amnesty.org' + element;
     request(url, function (error, response, html) {
         if (!error && response.statusCode == 200) {
-            //first off wtf is this element
-            //secondly we dont need a for loop here so how to fix it 
-           // var tag = $('').children();
-           tag = "200";
-            console.log(tag);
+
+          var $ = cheerio.load(html);
+          var holdtags = [];
+
+          $('li.tags__item--discrete').each(function(i, element){
+            var a = $(this);
+
+            //how to associate this particular tag(s) with the prior urls
+            var akids = a.children();
+            var title = $(akids).eq(0).text();
+            console.log(title);
+          });
+
+          
         }
     });
 });
