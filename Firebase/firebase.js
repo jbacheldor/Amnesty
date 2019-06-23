@@ -3,7 +3,7 @@
 |                     Required components                        |
 |                                                                |
 ----------------------------------------------------------------*/
-/*
+
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 var firebase = require("firebase/app");
@@ -16,7 +16,7 @@ require("firebase/database");
 |                   Firebase Configuration                       |
 |                                                                |
 ----------------------------------------------------------------*/
-/*
+
 const firebaseConfig = {
   apiKey: "AIzaSyDmxCFBvrrUywaJqoss2_9Z683DTzMB7B4",
   authDomain: "amnesty-orientation.firebaseapp.com",
@@ -33,7 +33,7 @@ const firebaseConfig = {
 |                                                                |
 ----------------------------------------------------------------*/
 //https://firebase.google.com/docs/database/web/read-and-write
-/*
+
 //sets user information within the database
 function writeUserData(userId, name, email, imageUrl) {
   firebase.database().ref('users/' + userId).set({
@@ -47,8 +47,8 @@ function writeUserData(userId, name, email, imageUrl) {
 var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
 starCountRef.on('value', function(snapshot) {
   updateStarCount(postElement, snapshot.val());
-});*/
+})
 
 exports.heck =function(){
-  console.log("test");
+  writeUserData("test", "for", "science", "http//");
 }
