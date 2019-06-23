@@ -8,12 +8,18 @@ var cheerio = require('cheerio');
 
 /*---------------------------------------------------------------/
 |                                                                |
+|                    Stupid Global Variable                      |
+|                                                                |
+----------------------------------------------------------------*/
+/*need to fix*/
+const actionLinks = [];
+var parsedResults = [];
+
+/*---------------------------------------------------------------/
+|                                                                |
 |                         Functions                              |
 |                                                                |
 ----------------------------------------------------------------*/
-
-const actionLinks = [];
-var parsedResults = [];
 
 function scrapeActionHome(){
 request('https://www.amnesty.org/en/get-involved/take-action/', function (error, response, html) {
@@ -39,11 +45,13 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
       var metadata = {
         title: splitTitle,
         url: url,
-        tags: []
+        tags: [],
+        description: ""
       };
       parsedResults.push(metadata);
     });
     getTags();
+    getDescriptions();
   }
 });
 };
@@ -57,24 +65,47 @@ actionLinks.forEach(function(element, i){
 
           var $ = cheerio.load(html);
           var holdtags = [];
-          console.log(url);
+
           $('li.tags__item--discrete').each(function(i, element){
             var a = $(this);
             
-            var title = $(a).text();
-            holdtags.push(title);
+            var tag = $(a).text();
+            holdtags.push(tag);
           });
           parsedResults[i].tags = holdtags;
+        }
+        else {
+          console.log('Error can not reach page.');
+        }
+    });
+});
+};
+
+//iterates through each page to collect all headers and paragraphs
+function getDescriptions(){
+  actionLinks.forEach(function(element, i){
+    var url = element;
+    request(url, function (error, response, html) {
+        if (!error && response.statusCode == 200) {
+
+          var $ = cheerio.load(html);
+
+          var holdDescription = "";
+          var akids = $('div.wysiwyg').children();
+          $(akids).each(function(i, element){
+            var a = $(this);
+            
+            var description = $(a).text();
+            holdDescription = holdDescription + description;
+          });
           console.log(parsedResults[i]);
         }
         else {
           console.log('Error can not reach page.');
         }
-        console.log('---');
     });
 });
-};
-
+}
 
 
 /*---------------------------------------------------------------/
