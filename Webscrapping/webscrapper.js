@@ -21,7 +21,8 @@ var parsedResults = [];
 |                                                                |
 ----------------------------------------------------------------*/
 
-function scrapeActionHome(){
+function scrapeActionHome(callback){
+  var hold = new Array();
 request('https://www.amnesty.org/en/get-involved/take-action/', function (error, response, html) {
   if (!error && response.statusCode == 200) {
     var $ = cheerio.load(html);
@@ -48,23 +49,23 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
         tags: [],
         description: ""
       };
-      parsedResults.push(metadata);
+      hold.push(metadata);
     });
-    getTags();
-    getDescriptions();
+    parsedResults = hold;
+    callback(getDescriptions);
   }
 });
 };
 
 //iterates through each URL to pull the tags on the screen and add them to the string
-function getTags(){
+function getTags(callback){
+  var holdtags = [];
 actionLinks.forEach(function(element, i){
     var url = element;
     request(url, function (error, response, html) {
         if (!error && response.statusCode == 200) {
 
           var $ = cheerio.load(html);
-          var holdtags = [];
 
           $('li.tags__item--discrete').each(function(i, element){
             var a = $(this);
@@ -78,11 +79,16 @@ actionLinks.forEach(function(element, i){
           console.log('Error can not reach page.');
         }
     });
+   // callback();
+   // console.log(parsedResults);
 });
+console.log(parsedResults);
+callback(test);
+//console.log(parsedResults);
 };
 
 //iterates through each page to collect all headers and paragraphs
-function getDescriptions(){
+function getDescriptions(callback){
   actionLinks.forEach(function(element, i){
     var url = element;
     request(url, function (error, response, html) {
@@ -98,20 +104,29 @@ function getDescriptions(){
             var description = $(a).text();
             holdDescription = holdDescription + description;
           });
-          console.log(parsedResults[i]);
+         // console.log(parsedResults[i]);
         }
         else {
           console.log('Error can not reach page.');
         }
+       //console.log(parsedResults);
     });
 });
+//console.log(parsedResults);
+callback();
 }
 
+function test(){
+    //console.log(parsedResults);
+}
 
 /*---------------------------------------------------------------/
 |                                                                |
 |                        Run Time Call                           |
 |                                                                |
 ----------------------------------------------------------------*/
-
-scrapeActionHome();
+scrapeActionHome(getTags);
+//var hold = new Array();
+//hold = scrapeActionHome();
+//console.log(hold);
+//test(hold);
