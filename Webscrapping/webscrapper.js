@@ -6,6 +6,12 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
+//
+var firebase = require("firebase/app");
+require("firebase/auth");
+require("firebase/firestore");
+require("firebase/database");
+
 /*---------------------------------------------------------------/
 |                                                                |
 |                    Stupid Global Variable                      |
@@ -15,11 +21,59 @@ var cheerio = require('cheerio');
 const actionLinks = [];
 var parsedResults = [];
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDmxCFBvrrUywaJqoss2_9Z683DTzMB7B4",
+  authDomain: "amnesty-orientation.firebaseapp.com",
+  databaseURL: "https://amnesty-orientation.firebaseio.com",
+  projectId: "amnesty-orientation",
+  storageBucket: "amnesty-orientation.appspot.com",
+  messagingSenderId: "980364352527",
+  appId: "1:980364352527:web:10d7acb12e502546"
+};
+
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database;
+var db = firebase.firestore();
+
 /*---------------------------------------------------------------/
 |                                                                |
 |                         Functions                              |
 |                                                                |
 ----------------------------------------------------------------*/
+
+function saveToDB(actionTitle, url, tags) {
+db.collection("Action").doc(actionTitle).set({
+  description: "",
+  pictureurl: "",
+  tag: tags,
+  title: actionTitle,
+  url: url
+  })
+  .then(function() {
+    console.log("Document successfully written!");
+  })
+  .catch(function(error) {
+    console.error("Error writing document: ", error);
+  });
+
+}
+
+function updateTags(actionTitle, url, tags) {
+  db.collection("Action").doc(actionTitle).set({
+    description: "",
+    pictureurl: "",
+    tag: tags,
+    title: actionTitle,
+    url: url
+    })
+    .then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
+  
+  }
 
 function scrapeActionHome(callback){
   var hold = new Array();
@@ -49,17 +103,22 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
         tags: [],
         description: ""
       };
-      hold.push(metadata);
+
+      var tags = [];
+
+      saveToDB(splitTitle, url, tags);
+
+      //hold.push(metadata);
     });
-    parsedResults = hold;
-    callback(getDescriptions);
+   // parsedResults = hold;
+    callback(parsedResults, getDescriptions);
   }
 });
 };
 
 //iterates through each URL to pull the tags on the screen and add them to the string
-function getTags(callback){
-  var holdtags = [];
+function getTags(parsedResults, callback){
+  var holdtags = new Array();
 actionLinks.forEach(function(element, i){
     var url = element;
     request(url, function (error, response, html) {
@@ -73,22 +132,27 @@ actionLinks.forEach(function(element, i){
             var tag = $(a).text();
             holdtags.push(tag);
           });
+          
           parsedResults[i].tags = holdtags;
+          holdtags = [];
+          updateTags
         }
         else {
           console.log('Error can not reach page.');
         }
+        console.log(parsedResults[i]);
     });
    // callback();
-   // console.log(parsedResults);
-});
-console.log(parsedResults);
-callback(test);
+   console.log(parsedResults);
+  });
+//console.log(parsedResults);
+//onsole.log(parsedResults);
+//callback(test);
 //console.log(parsedResults);
 };
 
 //iterates through each page to collect all headers and paragraphs
-function getDescriptions(callback){
+function getDescriptions(parsedResults, callback){
   actionLinks.forEach(function(element, i){
     var url = element;
     request(url, function (error, response, html) {
@@ -113,7 +177,7 @@ function getDescriptions(callback){
     });
 });
 //console.log(parsedResults);
-callback();
+callback(parsedResults, getTags);
 }
 
 function test(){

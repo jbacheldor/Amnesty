@@ -1,0 +1,22 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "--------------------------------------------- Database used: Firebase --------------------------------------------- Framework applied: Vue.js --------------------------------------------- Language used: Javascript, HTML, CSS, --------------------------------------------- Need: Request, Cheerio, Json, Node.js, *All available through npm install* --------------------------------------------- Trial implementation for the University of Michigan - Dearborn --------------------------------------------- Design created to assist in orientations:",
+  "main": "firebase.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbacheldor/Amnesty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbacheldor/Amnesty/issues"
+  },
+  "homepage": "https://github.com/jbacheldor/Amnesty#readme",
+  "dependencies": {
+    "firebase": "^6.2.0"
+  }
+}
