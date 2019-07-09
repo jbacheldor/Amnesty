@@ -20,4 +20,14 @@
 
     // Get a reference to the database service
     var database = firebase.database();
+
+
+    function writeUserData(userId, fname, lname, email, number) {
+    database.ref('Dearborn/' + userId).set({
+    firstname: fname,
+    lastname: lname,
+    email: email,
+    number : number,
+  });
+}
 </script>
