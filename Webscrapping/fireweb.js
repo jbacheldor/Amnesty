@@ -58,21 +58,26 @@ db.collection("Action").doc(actionTitle).set({
 
 }
 
-function updateTags() {
+async function updateTags() {
+//  function(resolve, reject) {
   db.collection("Action").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
+    for (const doc of querySnapshot) {
+      var url =  doc.data().url;
+      var tags, description = [];
+
+      tags = await getTags(url);
+      console.log(tags);
+    }
+   /* querySnapshot.forEach(function(doc) {
         // doc.data() is never undefined for query doc snapshots
-        var url = doc.data().url;
-        //console.log(doc.id, " => ", doc.data().url);
+        var url =  doc.data().url;
         var tags, description = [];
-        description = getDescriptions(url);
-        tags = getTags(url);
-        //console.log(tags);
-        //then save tag to current doc
-       // doc.data().tags = tags;
-    });
-  });
-};
+
+        tags = await getTags(url);
+        console.log(tags);
+    }); */
+  })
+}
 
 //this one is good
 function scrapeActionHome(callback){
@@ -107,17 +112,17 @@ request('https://www.amnesty.org/en/get-involved/take-action/', function (error,
       var tags = [];
       initialSaveToDB(splitTitle, url, tags);
     });
-    callback(parsedResults, getDescriptions);
+    //callback(parsedResults, getDescriptions);
   }
 });
 };
 
 //iterates through each URL to pull the tags on the screen and add them to the string
-function getTags(url){
+ async function getTags(url){
   var holdtags = new Array();
     request(url, function (error, response, html) {
         if (!error && response.statusCode == 200) {
-          var $ = cheerio.load(html);
+          var $ =cheerio.load(html);
 
           $('li.tags__item--discrete').each(function(i, element){
             var a = $(this);
@@ -125,11 +130,14 @@ function getTags(url){
             var tag = $(a).text();
             holdtags.push(tag);
           });
-          
-          return holdtags;
+          console.log(holdtags);
+          return Promise.resolve(holdtags);
+          //return holdtags;
         }
         else {
-          console.log('Error can not reach page.');
+          var message = 'Error can not reach page.';
+          //console.log('Error can not reach page.');
+          return Promise.reject(message);
         }
     });
 };
@@ -148,11 +156,16 @@ function getDescriptions(url){
             
             var description = $(a).text();
             holdDescription = holdDescription + description;
+            console.log(holdDescription);
           });
-          return holdDescription;
+          //console.log(holdDescription);
+          return Promise.resolve(holdDescription);
+          //return holdDescription;
         }
         else {
-          console.log('Error can not reach page.');
+          var message = 'Error can not reach page.';
+          //console.log('Error can not reach page.');
+          return Promise.reject(message);
         }
     });
 });
