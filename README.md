@@ -4,7 +4,7 @@ Database used:
 Firebase
 ---------------------------------------------
 Framework applied:
-Vue.js
+Angular
 ---------------------------------------------
 Language used:
 Javascript,
